@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="RU">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="28.css" />
+    <title>Заметки</title>
+  </head>
+  <body>
+    <div id="notes-container">
+      <!-- Здесь будут отображаться заметки -->
+      <div class="note">
+        <label for="date">Дата: </label>
+        <input type="date" id="date" name="date" value="2023-11-23" />
+
+        <label for="time">Время: </label>
+        <input type="time" id="time" name="time" value="12:00" />
+
+        <label for="description">Описание: </label>
+        <input
+          type="text"
+          id="description"
+          name="description"
+          value="Пример заметки"
+        />
+
+        <button onclick="removeNote(this)">Удалить</button>
+      </div>
+    </div>
+    <template id="note-template">
+      <div class="note">
+        <label for="date">Дата: </label>
+        <input type="date" id="date" name="date" />
+
+        <label for="time">Время: </label>
+        <input type="time" id="time" name="time" />
+
+        <label for="description">Описание: </label>
+        <input type="text" id="description" name="description" />
+
+        <button onclick="removeNote(this)">Удалить</button>
+      </div>
+    </template>
+    <button onclick="addNote()">Добавить</button>
+    <script src="28.js"></script>
+  </body>
+</html>
