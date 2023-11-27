@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Password</title>
+  </head>
+  <body>
+    <h1>Анализатор сложности пароля</h1>
+    <form>
+      <label for="password">Введите пароль:</label>
+      <input type="password" id="password" name="password" required />
+      <button type="button" onclick="analyzePassword()">
+        Проверить сложность
+      </button>
+    </form>
+    <div id="result"></div>
+    <ul id="suggestions"></ul>
+    <script src="23.js"></script>
+  </body>
+</html>
