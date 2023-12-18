@@ -3,8 +3,8 @@
 
 function addNote() {
   // Получаем шаблон и его содержимое
-  var template = document.getElementById("note-template");
-  var clone = document.importNode(template.content, true);
+  let template = document.getElementById("note-template");
+  let clone = document.importNode(template.content, true);
 
   // Добавляем заметку в контейнер
   document.getElementById("notes-container").appendChild(clone);
@@ -12,6 +12,6 @@ function addNote() {
 
 function removeNote(button) {
   // Получаем родительский элемент кнопки (заметку) и удаляем его
-  var note = button.parentNode;
+  let note = button.parentNode;
   note.parentNode.removeChild(note);
 }

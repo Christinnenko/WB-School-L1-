@@ -3,7 +3,7 @@
 
 function addStyledElement(color) {
   // Создаем новый элемент
-  var newElement = document.createElement("div");
+  let newElement = document.createElement("div");
 
   // Устанавливаем класс для нового элемента
   newElement.className = "styledElement";

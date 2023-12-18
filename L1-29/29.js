@@ -14,27 +14,30 @@ document
       quantity: document.getElementById("quantity").value,
     };
 
-    // Отправляем данные на определенный URL с использованием AJAX
-    const xhr = new XMLHttpRequest();
+    // Отправляем данные на определенный URL с использованием Fetch API
     const url = "https://site.ru/new-order/webhook.php"; // URL, куда отправляем запрос
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
 
-    // Преобразуем данные в формат JSON
-    const jsonData = JSON.stringify(formData);
-
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        // Действия после успешной отправки данных
-        console.log("Данные успешно отправлены.");
-      } else {
-        // Обработка ошибок
-        console.error("Произошла ошибка при отправке данных.");
-      }
-    };
-
-    // Отправляем данные
-    xhr.send(jsonData);
-
-    document.getElementById("orderForm").reset();
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Действия после успешной отправки данных
+          console.log("Данные успешно отправлены.");
+        } else {
+          // Обработка ошибок
+          console.error("Произошла ошибка при отправке данных.");
+        }
+      })
+      .catch((error) => {
+        // Обработка ошибок при выполнении запроса
+        console.error("Произошла ошибка при выполнении запроса:", error);
+      })
+      .finally(() => {
+        document.getElementById("orderForm").reset();
+      });
   });
