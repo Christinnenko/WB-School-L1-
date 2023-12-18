@@ -11,7 +11,7 @@ function addStyledElement(color) {
   // Устанавливаем цвет фона
   newElement.style.backgroundColor = color;
 
-  // Устанавливаем текст внутри элемента (можете изменить по своему усмотрению)
+  // Устанавливаем текст внутри элемента
   newElement.textContent = "Новый элемент";
 
   // Добавляем новый элемент в DOM (в конец body)

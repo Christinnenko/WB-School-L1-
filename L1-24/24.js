@@ -97,10 +97,6 @@ document.addEventListener("DOMContentLoaded", function () {
       } else if (typeof x === "number" && typeof y === "number") {
         return sortDirection === "asc" ? x - y : y - x;
       }
-
-      // Дополнительные проверки для других типов данных
-      // ...
-
       return 0; // По умолчанию
     });
   }
