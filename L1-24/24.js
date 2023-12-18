@@ -17,23 +17,36 @@ document.addEventListener("DOMContentLoaded", function () {
   // Загрузка данных при загрузке страницы
   loadData();
 
-  // Функция для загрузки данных с сервера
+  // Функция для загрузки данных с сервера с использованием Fetch API
   function loadData() {
-    let xhr = new XMLHttpRequest();
-    xhr.open(
-      "GET",
-      "http://www.filltext.com/?rows=1000&fname=%7BfirstName%7D&lname=%7BlastName%7D&tel=%7Bphone%7Cformat%7D&address=%7BstreetAddress%7D&city=%7Bcity%7D&state=%7BusState%7Cabbr%7D&zip=%7Bzip%7D",
-      true
-    );
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState == 4 && xhr.status == 200) {
-        data = JSON.parse(xhr.responseText);
+    // Используем fetch для выполнения GET-запроса
+    fetch(
+      "http://www.filltext.com/?rows=1000&fname=%7BfirstName%7D&lname=%7BlastName%7D&tel=%7Bphone%7Cformat%7D&address=%7BstreetAddress%7D&city=%7Bcity%7D&state=%7BusState%7Cabbr%7D&zip=%7Bzip%7D"
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            `Сетевой запрос завершился неудачей, статус: ${response.status}`
+          );
+        }
+        // Преобразуем ответ в JSON
+        return response.json();
+      })
+      .then((fetchedData) => {
+        // Проверяем, что данные успешно получены
+        if (!Array.isArray(fetchedData) || fetchedData.length === 0) {
+          throw new Error("Данные с сервера не получены.");
+        }
+
+        data = fetchedData;
         totalData = data.length;
         renderTable();
         renderPagination();
-      }
-    };
-    xhr.send();
+      })
+      .catch((error) => {
+        // Обработка ошибок
+        console.error("Ошибка во время запроса:", error);
+      });
   }
 
   // Функция для отображения таблицы
