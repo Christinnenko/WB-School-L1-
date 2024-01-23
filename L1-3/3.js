@@ -5,10 +5,8 @@
 // вычисление всех простых чисел до числа N
 // Будет плюсом, если задумаетесь и об оптимизации.
 
-//глобальное лексическое окружение
 const MathX = (function () {
-  //локальное лексическое окружение
-  // проверкa, является ли число простым
+  // Внутренняя функция isPrime, определяющая, является ли число простым
   function isPrime(num) {
     if (num <= 1) return false;
     if (num <= 3) return true;
@@ -19,54 +17,74 @@ const MathX = (function () {
     return true;
   }
 
-  // Замыкание, возвращающее функцию findNthPrime, которая находит N-е простое число.
-  // Замыкание использует переменные count и num, чтобы отслеживать количество найденных простых чисел и текущее число в ряду.
-  function nthPrimeClosure(n) {
-    let count = 0;
-    let num = 1;
-
-    // Внутренняя функция, которая использует count и isPrime
-    function findNthPrime() {
-      while (count < n) {
-        num++;
-        if (isPrime(num)) {
-          count++;
-        }
-      }
-      return num;
-    }
-
-    return findNthPrime;
-  }
-
   return {
-    // Вычисление N-го числа в ряду Фибоначчи
+    // 1. Вычисление N-го числа в ряду Фибоначчи
     fibonacciNth: function (n) {
-      if (n <= 0) return 0;
-      if (n === 1) return 1;
+      if (n <= 0) {
+        console.log("Некорректное значение n. n должно быть больше 0.");
+        return null;
+      }
+      if (n === 1) return 0;
+
       let a = 0;
       let b = 1;
-      for (let i = 2; i <= n; i++) {
+
+      for (let i = 2; i < n; i++) {
         const temp = a + b;
         a = b;
         b = temp;
       }
+
       return b;
     },
-    //Вычисление всех чисел в ряду Фибоначчи до числа N
+
+    // 2. Вычисление всех чисел в ряду Фибоначчи до числа N
     fibonacciSeries: function (n) {
+      if (n <= 0) {
+        console.log("Некорректное значение n. n должно быть больше 0.");
+        return [];
+      }
+
       const series = [0, 1];
-      for (let i = 2; i <= n; i++) {
+      let i = 2;
+      while (series[i - 1] + series[i - 2] <= n) {
         series.push(series[i - 1] + series[i - 2]);
+        i++;
       }
       return series;
     },
 
-    //Экспортируемое замыкание, возвращаемое nthPrimeClosure -  вычисление N-го простого числа
-    nthPrime: nthPrimeClosure,
+    // 3. Вычисление N-го простого числа
+    primesNth: function (n) {
+      if (n <= 0) {
+        console.log("Некорректное значение n. n должно быть больше 0.");
+        return null;
+      }
 
-    //Вычисление всех простых чисел до числа N
-    primesUpToN: function (n) {
+      let count = 0;
+      let num = 1;
+
+      // Внутренняя функция findNthPrime, использующая замыкание для доступа к count и isPrime
+      function findNthPrime() {
+        while (count < n) {
+          num++;
+          if (isPrime(num)) {
+            count++;
+          }
+        }
+        return num;
+      }
+
+      return findNthPrime();
+    },
+
+    // 4. Вычисление всех простых чисел до числа N
+    primesSeries: function (n) {
+      if (n <= 0) {
+        console.log("Некорректное значение n. n должно быть больше 0.");
+        return [];
+      }
+
       const primes = [];
       for (let i = 2; i <= n; i++) {
         if (isPrime(i)) {
@@ -79,8 +97,7 @@ const MathX = (function () {
 })();
 
 // Пример использования
-const findThirdPrime = MathX.nthPrime(3);
-console.log(findThirdPrime());
-console.log(MathX.fibonacciNth(5));
-console.log(MathX.fibonacciSeries(8));
-console.log(MathX.primesUpToN(15));
+console.log(MathX.fibonacciNth(10)); // 34
+console.log(MathX.fibonacciSeries(8)); // [0, 1, 1, 2, 3, 5, 8]
+console.log(MathX.primesNth(17)); // 59
+console.log(MathX.primesSeries(15)); // [2, 3, 5, 7, 11, 13]
