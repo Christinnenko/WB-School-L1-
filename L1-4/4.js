@@ -7,6 +7,10 @@
 // 121 пользователь
 // Функцию надо упаковать в модуль.
 
+// Задаем формы для слов "сообщение" и "пользователь"
+const messageForms = ["сообщение", "сообщения", "сообщений"];
+const userForms = ["пользователь", "пользователя", "пользователей"];
+
 // Модуль для изменения окончания слов
 const wordEndingChanger = (function () {
   // Вспомогательная функция для определения окончания в зависимости от числа
@@ -14,7 +18,7 @@ const wordEndingChanger = (function () {
     // Приводим число к положительному значению
     number = Math.abs(number);
 
-    // Исключаем числа от 11 до 19, так как для них окончание всегда будет третье
+    // Исключаем числа от 11 до 19, так как для них окончание всегда будет "-ий"
     number %= 100;
     if (number >= 11 && number <= 19) {
       return endings[2];
@@ -51,10 +55,6 @@ const wordEndingChanger = (function () {
 })();
 
 // Пример использования модуля
-// Задаем формы для слов "сообщение" и "пользователь"
-const messageForms = ["сообщение", "сообщения", "сообщений"];
-const userForms = ["пользователь", "пользователя", "пользователей"];
-
 console.log(wordEndingChanger.changeEnding(112, messageForms)); // 112 сообщений
 console.log(wordEndingChanger.changeEnding(12, messageForms)); // 12 сообщений
 console.log(wordEndingChanger.changeEnding(1, messageForms)); // 1 сообщение
