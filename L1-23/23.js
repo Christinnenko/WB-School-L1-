@@ -12,34 +12,50 @@ function analyzePassword() {
 
     // Оценки для различных аспектов пароля (длина, наличие цифр, регистр символов)
     const lengthScore = password.length >= minLength ? 2 : 0;
+    const specialCharScore = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(password)
+      ? 2
+      : 0;
     const digitScore = /\d/.test(password) ? 2 : 0;
-    const lowerCaseScore = /[a-z]/.test(password) ? 1 : 0;
-    const upperCaseScore = /[A-Z]/.test(password) ? 1 : 0;
+    const lowerCaseScore = /\p{Ll}/u.test(password) ? 1 : 0;
+    const upperCaseScore = /\p{Lu}/u.test(password) ? 1 : 0;
 
     // Общая оценка сложности пароля
     const totalScore =
-      lengthScore + digitScore + lowerCaseScore + upperCaseScore;
+      lengthScore +
+      specialCharScore +
+      digitScore +
+      lowerCaseScore +
+      upperCaseScore;
 
     // Уровень сложности пароля
     let complexity;
-    if (totalScore < 4) {
+
+    if (totalScore <= 4) {
       complexity = "Слабый уровень защиты";
-    } else if (totalScore < 6) {
+    } else if (totalScore < 7) {
       complexity = "Средний уровень защиты";
     } else {
-      complexity = "Достаточный уровень защиты";
+      complexity = "Высокий уровень защиты";
     }
 
-    // Советы по улучшению пароля
+    // Советы по улучшению пароля (если у пароля "Слабый уровень защиты")
     const suggestions = [];
-    if (lengthScore === 0) {
-      suggestions.push("Увеличьте длину пароля (минимум 8 символов)");
-    }
-    if (digitScore === 0) {
-      suggestions.push("Добавьте цифры в пароль");
-    }
-    if (lowerCaseScore === 0 || upperCaseScore === 0) {
-      suggestions.push("Используйте символы в разных регистрах");
+
+    if (totalScore <= 4) {
+      if (lengthScore === 0) {
+        suggestions.push("Увеличьте длину пароля (минимум 8 символов)");
+      }
+      if (specialCharScore === 0) {
+        suggestions.push(
+          "Добавьте символы в пароль (Например, ! @ # $ % ^ & * ( ) _ + { } [ ] : ; < > , . ? ~  / -)"
+        );
+      }
+      if (digitScore === 0) {
+        suggestions.push("Добавьте цифры в пароль");
+      }
+      if (lowerCaseScore === 0 || upperCaseScore === 0) {
+        suggestions.push("Используйте буквы в разных регистрах");
+      }
     }
 
     return {
@@ -59,9 +75,9 @@ function analyzePassword() {
   // Отображение советов по улучшению пароля в виде списка
   const suggestionsList = document.getElementById("suggestions");
   suggestionsList.innerHTML = "";
-  result.suggestions.forEach((advice) => {
+  result.suggestions.forEach((suggestion) => {
     const listItem = document.createElement("li");
-    listItem.textContent = advice;
+    listItem.textContent = suggestion;
     suggestionsList.appendChild(listItem);
   });
 }
