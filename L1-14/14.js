@@ -15,9 +15,6 @@ function loadImage(url) {
         width: image.width,
         height: image.height,
         src: image.src,
-        alt: image.alt,
-        naturalWidth: image.naturalWidth,
-        naturalHeight: image.naturalHeight,
       });
     };
 
@@ -33,7 +30,8 @@ function loadImage(url) {
 }
 
 // Пример использования
-const imageUrl = "https://replit.com/public/images/run_pointer.svg";
+const imageUrl =
+  "https://www.iphones.ru/wp-content/uploads/2018/07/55BA2802-3DA6-417F-9604-EC147507B547.jpeg";
 
 // Вызов функции loadImage с передачей URL изображения
 loadImage(imageUrl)

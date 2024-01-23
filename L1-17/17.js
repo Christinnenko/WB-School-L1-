@@ -3,22 +3,36 @@
 // Найденные данные должны отображаться в выпадающем списке, из которого можно выбрать подходящее значение.
 // Реализовать дебоунсинг и защиту от троттлинга с помощью замыканий
 
-function debounce(func, delay) {
-  // Функция debounce: возвращает функцию, вызывающую переданную функцию не чаще, чем раз в указанный интервал времени.
+function debounceAndThrottle(func, debounceDelay, throttleDelay) {
   let timeoutId;
+  let throttling = false;
+
   return function () {
     const context = this;
     const args = arguments;
+
+    // Защита от троттлинга
+    if (!throttling) {
+      throttling = true;
+
+      func.apply(context, args);
+
+      setTimeout(() => {
+        throttling = false;
+      }, throttleDelay);
+    }
+
+    // Дебаунсинг
     clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => func.apply(context, args), delay);
+    timeoutId = setTimeout(() => func.apply(context, args), debounceDelay);
   };
 }
 
-const API_KEY = "TOKEN"; // Токен для доступа к Yandex API, полученный на https://developer.tech.yandex.ru/
+const API_KEY = "253595a1-c7f6-4680-85a8-a8f84a314039"; // Токен для доступа к Yandex API, полученный на https://developer.tech.yandex.ru/
 const BASE_URL = "https://geocode-maps.yandex.ru/1.x/";
 
+// Функция для выполнения геокодирования через Yandex API
 function geocodeYandex(address, callback) {
-  // Функция для выполнения геокодирования через Yandex API
   const url = `${BASE_URL}?lang=ru_RU&apikey=${API_KEY}&geocode=${encodeURIComponent(
     address
   )}&format=json`;
@@ -45,30 +59,35 @@ function geocodeYandex(address, callback) {
 document.addEventListener("DOMContentLoaded", function () {
   // Обработчик события, срабатывающий после полной загрузки DOM
   const addressInput = document.getElementById("address-input");
-  const resultsList = document.getElementById("results-list");
+  const addressList = document.getElementById("address-list");
 
-  const geocode = debounce(function () {
-    // Задержка выполнения функции geocode по времени delay, используя debounce
-    const inputValue = addressInput.value.trim();
-    if (inputValue.length === 0) {
-      resultsList.innerHTML = "";
-      return;
-    }
+  const geocode = debounceAndThrottle(
+    function () {
+      // Задержка выполнения функции geocode по времени delay, используя debounce
+      const inputValue = addressInput.value.trim();
+      if (inputValue.length === 0) {
+        addressList.innerHTML = "";
+        return;
+      }
 
-    // Выполнение геокодирования при вводе адреса и обновление списка результатов
-    geocodeYandex(inputValue, (results) => {
-      resultsList.innerHTML = "";
-      results.forEach((result) => {
-        const resultItem = document.createElement("li");
-        resultItem.textContent = result.address;
-        resultItem.addEventListener("click", function () {
-          addressInput.value = result.address;
-          resultsList.innerHTML = ""; // Очищаем список после выбора
+      // Выполнение геокодирования при вводе адреса и обновление списка результатов
+      geocodeYandex(inputValue, (results) => {
+        console.log("Обновление списка");
+        addressList.innerHTML = "";
+        results.forEach((result) => {
+          const resultItem = document.createElement("li");
+          resultItem.textContent = result.address;
+          resultItem.addEventListener("click", function () {
+            addressInput.value = result.address;
+            addressList.innerHTML = ""; // Очищаем список после выбора
+          });
+          addressList.appendChild(resultItem);
         });
-        resultsList.appendChild(resultItem);
       });
-    });
-  }, 300);
+    },
+    7000,
+    7000
+  );
 
   addressInput.addEventListener("input", geocode);
 });

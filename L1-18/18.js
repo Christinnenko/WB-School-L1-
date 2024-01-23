@@ -1,30 +1,34 @@
 // Подсчитать максимальный объем данных, который можно записать в localStorage вашего браузера.
 
-function getLocalStorageSize() {
-  let testKey = "testKey";
-  let testData = "";
-  // Создаем строку данных, которую будем записывать
-  while (testData.length < 1024 * 1024 && !localStorage.getItem(testKey)) {
-    testData += "a";
+//ВАЖНО: очистить localStorage перед запуском
+function estimateLocalStorageLimit() {
+  let testKey = "t";
+  let testData = "a".repeat(5242800); // Зная, что приблизительное ограничение 5мб, заполняем сразу чуть меньше
+  let maxLocalStorageSize = 0;
+
+  function writeTestData() {
     try {
       localStorage.setItem(testKey, testData);
-    } catch (e) {
-      // Если не удается установить значение, значит достигли лимита
-      break;
+      testData += "a"; // далее добавляем по 1 символу (английский символ = 1 байту (UTF-16))
+      maxLocalStorageSize = testData.length; // размер строки в байтах будет равен количеству символов в строке
+      setTimeout(writeTestData, 0); // вызываем следующую итерацию асинхронно
+    } catch (err) {
+      if (err.code === DOMException.QUOTA_EXCEEDED_ERR) {
+        // localStorage достиг своего лимита
+        localStorage.removeItem(testKey); // удаляем тестовый ключ
+        console.log(
+          "Максимальный объем localStorage: " + maxLocalStorageSize + " байт"
+        ); //Максимальный объем localStorage: 5242880 байт
+      } else {
+        console.error("Ошибка записи в localStorage: ", err);
+      }
     }
   }
-
-  // Удаляем тестовый ключ
-  localStorage.removeItem(testKey);
-
-  // Возвращаем размер данных, который удалось записать
-  return testData.length;
+  // Запуск оценки объема localStorage
+  writeTestData();
 }
 
-let localStorageSize = getLocalStorageSize();
-console.log(`Максимальный объем localStorage: ${localStorageSize} байт`);
+estimateLocalStorageLimit();
 
-// Этот код пытается записать данные в localStorage до тех пор, пока не достигнет лимита.
-// Затем он возвращает размер данных, которые удалось записать.
-// Метод не является абсолютно точным, так как браузер может использовать
-// различные стратегии управления хранилищем.
+// Этот код пытается записать данные в localStorage до тех пор, пока не достигнет лимита: сначала записывает 5242800 символов,
+// затем добавляет по 1 символу и проверяет записался ли этот символ. Если не записался - лимит достигнут, выводит сообщение с размером данных, которые удалось записать

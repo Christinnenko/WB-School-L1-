@@ -4,16 +4,21 @@
   font-size: 16px;
 }
 
-#results-list {
+#address-list {
+  width: 300px;
   list-style: none;
   padding: 0;
   margin: 10px 0;
 }
 
-#results-list li {
+#address-list li {
   cursor: pointer;
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-bottom: 5px;
+}
+
+#address-list li:hover {
+  background-color: bisque;
 }
