@@ -2,23 +2,21 @@
 
 //ВАЖНО: очистить localStorage перед запуском
 function estimateLocalStorageLimit() {
-  let testKey = "t";
   let testData = "a".repeat(5242800); // Зная, что приблизительное ограничение 5мб, заполняем сразу чуть меньше
   let maxLocalStorageSize = 0;
 
   function writeTestData() {
     try {
-      localStorage.setItem(testKey, testData);
-      testData += "a"; // далее добавляем по 1 символу (английский символ = 1 байту (UTF-16))
-      maxLocalStorageSize = testData.length; // размер строки в байтах будет равен количеству символов в строке
+      localStorage.setItem("", testData);
+      testData += "a"; // далее добавляем по 1 символу (английский символ = 2 байтам (UTF-16))
+      maxLocalStorageSize = testData.length * 2; // размер строки в байтах будет равен количеству символов в строке
       setTimeout(writeTestData, 0); // вызываем следующую итерацию асинхронно
     } catch (err) {
       if (err.code === DOMException.QUOTA_EXCEEDED_ERR) {
         // localStorage достиг своего лимита
-        localStorage.removeItem(testKey); // удаляем тестовый ключ
         console.log(
           "Максимальный объем localStorage: " + maxLocalStorageSize + " байт"
-        ); //Максимальный объем localStorage: 5242880 байт
+        );
       } else {
         console.error("Ошибка записи в localStorage: ", err);
       }
