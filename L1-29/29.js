@@ -15,7 +15,7 @@ document
     };
 
     // Отправляем данные на определенный URL с использованием Fetch API
-    const url = "https://site.ru/new-order/webhook.php"; // URL, куда отправляем запрос
+    const url = "https://site.ru/new-order/webhook.php"; // URL(заглушка), куда отправляем запрос
 
     fetch(url, {
       method: "POST",
@@ -28,6 +28,7 @@ document
         if (response.ok) {
           // Действия после успешной отправки данных
           console.log("Данные успешно отправлены.");
+          document.getElementById("orderForm").reset();
         } else {
           // Обработка ошибок
           console.error("Произошла ошибка при отправке данных.");
@@ -36,8 +37,5 @@ document
       .catch((error) => {
         // Обработка ошибок при выполнении запроса
         console.error("Произошла ошибка при выполнении запроса:", error);
-      })
-      .finally(() => {
-        document.getElementById("orderForm").reset();
       });
   });
