@@ -130,6 +130,12 @@ document.addEventListener("DOMContentLoaded", function () {
       pageBtn.addEventListener("click", function () {
         currentPage = parseInt(this.innerText);
         renderTable();
+        // Убираем класс "active" у всех кнопок
+        document.querySelectorAll(".page-btn").forEach(function (btn) {
+          btn.classList.remove("active");
+        });
+        // Добавляем класс "active" для нажатой кнопки
+        this.classList.add("active");
       });
 
       paginationElement.appendChild(pageBtn);
