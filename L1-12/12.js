@@ -17,9 +17,9 @@ const book = {
     return this.author;
   },
 
-  // Метод для изменения года издания книги
-  setYear: function (newYear) {
-    this.year = newYear;
+   // Метод для получения года издания книги
+   getYear: function () {
+    return this.year;
   },
 
   // Метод для изменения названия книги
@@ -32,9 +32,9 @@ const book = {
     this.author = newAuthor;
   },
 
-  // Метод для получения года издания книги
-  getYear: function () {
-    return this.year;
+   // Метод для изменения года издания книги
+   setYear: function (newYear) {
+    this.year = newYear;
   },
 };
 

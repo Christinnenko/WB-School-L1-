@@ -14,9 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let sortColumn;
   let sortDirection = "asc";
 
-  // Загрузка данных при загрузке страницы
-  loadData();
-
   // Функция для загрузки данных с сервера с использованием Fetch API
   function loadData() {
     // Используем fetch для выполнения GET-запроса
@@ -48,6 +45,9 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Ошибка во время запроса:", error);
       });
   }
+
+  // Загрузка данных при загрузке страницы
+  loadData();
 
   // Функция для отображения таблицы
   function renderTable() {

@@ -61,8 +61,8 @@ const MathX = (function () {
         return null;
       }
 
-      let count = 0;
-      let num = 1;
+      let count = 0; //счетчик количества найденных простых чисел
+      let num = 1; //текущее число
 
       // Внутренняя функция findNthPrime, использующая замыкание для доступа к count и isPrime
       function findNthPrime() {
