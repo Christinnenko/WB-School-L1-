@@ -1,6 +1,6 @@
 // Реализовать функцию конвертации строки в JSON со всеми необходимыми проверками и валидациями.
 
-function analogeParse(jsonString) {
+function analogueParse(jsonString) {
   // Проверка на переданную строку
   if (typeof jsonString !== "string") {
     throw new Error("Input is not a valid JSON string.");
@@ -62,5 +62,5 @@ function analogeParse(jsonString) {
 
 // Пример использования
 const jsonString = '{"name": "Chris", "age": 29}';
-const parsedObject = analogeParse(jsonString);
-console.log(parsedObject);
+const result = analogueParse(jsonString);
+console.log(result);

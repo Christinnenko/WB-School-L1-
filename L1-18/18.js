@@ -2,7 +2,7 @@
 
 //ВАЖНО: очистить localStorage перед запуском
 function estimateLocalStorageLimit() {
-  let testData = "a".repeat(5242800); // Зная, что приблизительное ограничение 5мб, заполняем сразу чуть меньше
+  let testData = "a".repeat(5242800); // Зная, что приблизительное ограничение 10мб, заполняем сразу чуть меньше
   let maxLocalStorageSize = 0;
 
   function writeTestData() {

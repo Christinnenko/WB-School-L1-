@@ -1,20 +1,20 @@
 // Реализовать функцию конвертации JSON в строку
 
-function analogueStringify(obj) {
+function analogueParse(obj) {
   // Проверка, является ли obj объектом и не является ли null
   if (typeof obj === "object" && obj !== null) {
     // Если obj - массив
     if (Array.isArray(obj)) {
-      // Обработка массива: рекурсивный вызов analogueStringify для каждого элемента
-      const arrayResult = obj.map((element) => analogueStringify(element));
+      // Обработка массива: рекурсивный вызов analogueParse для каждого элемента
+      const arrayResult = obj.map((element) => analogueParse(element));
       return `[${arrayResult.join(",")}]`;
     } else {
-      // Обработка объекта: рекурсивный вызов analogueStringify для каждой пары ключ-значение
+      // Обработка объекта: рекурсивный вызов analogueParse для каждой пары ключ-значение
       const objectResult = [];
       for (const key in obj) {
         if (obj.hasOwnProperty(key)) {
           const value = obj[key];
-          const valueString = analogueStringify(value);
+          const valueString = analogueParse(value);
           objectResult.push(`"${key}":${valueString}`);
         }
       }
@@ -40,6 +40,6 @@ const objectExample = {
   },
 };
 
-// Преобразование объекта в строку с использованием analogueStringify
-const string = analogueStringify(objectExample);
+// Преобразование объекта в строку с использованием analogueParse
+const string = analogueParse(objectExample);
 console.log(string);

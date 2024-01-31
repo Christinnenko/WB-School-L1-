@@ -16,7 +16,7 @@
 const container = document.querySelector(".container");
 const token = window.location.hash.split("=")[1].split("&")[0]; // Извлечение токена пользователя из адресной строки после авторизации
 
-let maxSpaceLocalStorage = 0; //максимальный объем localStorage
+let maxSpaceLocalStorage = 0; // Максимальный объем localStorage
 let count = 5; // Количество загружаемых постов
 let offset = 0; // Номер поста, с которого начинать загрузку
 
@@ -25,8 +25,8 @@ const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     // Проверка, что элемент появился в области видимости
     if (entry.isIntersecting) {
-      observer.unobserve(entry.target); // Прекращения отслеживания элемента
-      fetchPosts(); //запуск загрузки постов
+      observer.unobserve(entry.target); // Прекращение отслеживания элемента
+      fetchPosts(); // Запуск загрузки постов
     }
   });
 });
@@ -40,7 +40,7 @@ const calculateSpaceLocalStorage = () => {
   while (true) {
     try {
       localStorage.setItem("", testData);
-      testData += a;
+      testData += "a";
     } catch {
       break;
     }
@@ -48,7 +48,7 @@ const calculateSpaceLocalStorage = () => {
 
   localStorage.clear();
 
-  return testData.length * 2; //1 символ = 2 байта
+  return testData.length * 2; // 1 символ = 2 байта
 };
 
 // Установка максимального объема localStorage
@@ -110,7 +110,7 @@ const createItem = (data) => {
   // добавление элемента с датой поста
   const date = document.createElement("span");
   date.classList.add("date");
-  dateData = new Date(data.date * 1000);
+  const dateData = new Date(data.date * 1000);
   date.textContent = `${dateData.toLocaleDateString()} ${dateData.toLocaleTimeString(
     [],
     {
@@ -148,31 +148,37 @@ const addItem = (item) => {
 
 // Функция для запроса постов из VK со стены указанного сообщества
 // Параметры метода: https://dev.vk.com/ru/method/wall.get
-const fetchPosts = () =>
-  VK.Api.call(
-    "wall.get",
-    {
-      owner_id: -29573241, // id сообщества VK
-      domain: "nrmusicru",
-      count: count, // Количество записей
-      offset: offset,
-      access_token: token,
-      v: 5.131,
-    },
-    (res) => {
-      // Устанавливаем полученные посты в локальное хранилище
-      setItemsInLocalStorage(res.response.items);
+const fetchPosts = () => {
+  // Функция для выполнения запроса
+  const doFetch = () => {
+    VK.Api.call(
+      "wall.get",
+      {
+        owner_id: -29573241, // id сообщества VK
+        domain: "nrmusicru",
+        count: count, // Количество записей
+        offset: offset,
+        access_token: token,
+        v: 5.131,
+      },
+      (res) => {
+        // Устанавливаем полученные посты в локальное хранилище
+        setItemsInLocalStorage(res.response.items);
 
-      // Увеличиваем отступ для следующей загрузки
-      offset += count;
+        // Увеличиваем отступ для следующей загрузки
+        offset += count;
 
-      // Добавляем новые элементы на страницу
-      res.response.items.forEach((item) => addItem(item));
+        // Добавляем новые элементы на страницу
+        res.response.items.forEach((item) => addItem(item));
 
-      // Запускаем наблюдателя за новым (последним) элементом
-      observer.observe(document.querySelector(".item:last-child"));
-    }
-  );
+        // Запускаем наблюдателя за новым (последним) элементом
+        observer.observe(document.querySelector(".item:last-child"));
+      }
+    );
+  };
+
+  setTimeout(doFetch, 1000);
+};
 
 // Начальная функция, проверяющая наличие данных в localStorage
 const setItems = () => {

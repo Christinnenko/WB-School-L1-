@@ -28,7 +28,7 @@ function debounceAndThrottle(func, debounceDelay, throttleDelay) {
   };
 }
 
-const API_KEY = "253595a1-c7f6-4680-85a8-a8f84a314039"; // Токен для доступа к Yandex API, полученный на https://developer.tech.yandex.ru/
+const API_KEY = "xxxxxxx"; // Токен для доступа к Yandex API, полученный на https://developer.tech.yandex.ru/
 const BASE_URL = "https://geocode-maps.yandex.ru/1.x/";
 
 // Функция для выполнения геокодирования через Yandex API
